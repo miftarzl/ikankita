@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IkanKita – Deteksi Kesegaran Ikan Berbasis AI</title>
+    <meta name="description" content="IkanKita menggunakan teknologi computer vision canggih untuk menentukan kesegaran ikan secara instan. Akurat, cepat, dan mudah digunakan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="landing-page">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="19" cy="20" rx="13" ry="8" fill="url(#fishGrad)"/>
+                        <path d="M32 20 L40 12 L40 28 Z" fill="url(#fishGrad)"/>
+                        <circle cx="12" cy="17" r="2" fill="#fff" opacity="0.9"/>
+                        <circle cx="12" cy="17" r="1" fill="#0a1628"/>
+                        <defs>
+                            <linearGradient id="fishGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#14b8a6"/>
+                                <stop offset="100%" stop-color="#0891b2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="brand-name">IkanKita</span>
+            </a>
+            <div class="nav-links">
+                <a href="#fitur" class="nav-link">Fitur</a>
+                <a href="#cara-kerja" class="nav-link">Cara Kerja</a>
+                <a href="#akurasi" class="nav-link">Akurasi</a>
+                <a href="/detect" class="btn-nav-cta">Mulai Deteksi</a>
+            </div>
+            <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            <div class="particles" id="particles"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Powered by YOLOv8 AI
+                </div>
+                <h1 class="hero-title">
+                    Kenali Kesegaran<br>
+                    <span class="gradient-text">Ikan Anda</span><br>
+                    Secara Instan
+                </h1>
+                <p class="hero-desc">
+                    IkanKita menggunakan kecerdasan buatan mutakhir untuk menganalisis kesegaran ikan 
+                    hanya dari foto atau kamera. Dapatkan hasil akurat dalam hitungan detik.
+                </p>
+                <div class="hero-actions">
+                    <a href="/detect" class="btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                        Mulai Deteksi Sekarang
+                    </a>
+                    <a href="#cara-kerja" class="btn-ghost">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Lihat Cara Kerja
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="96">0</span>
+                        <span class="stat-suffix">%</span>
+                        <span class="stat-label">Akurasi Model</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="5112">0</span>
+                        <span class="stat-suffix">+</span>
+                        <span class="stat-label">Data Training</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="2">0</span>
+                        <span class="stat-suffix">s</span>
+                        <span class="stat-label">Hasil Instan</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="phone-mockup">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="mock-app">
+                                <div class="mock-header">
+                                    <div class="mock-dot red"></div>
+                                    <div class="mock-dot yellow"></div>
+                                    <div class="mock-dot green"></div>
+                                </div>
+                                <div class="mock-camera">
+                                    <div class="scan-line"></div>
+                                    <div class="corner tl"></div>
+                                    <div class="corner tr"></div>
+                                    <div class="corner bl"></div>
+                                    <div class="corner br"></div>
+                                    <div class="mock-fish-icon">🐟</div>
+                                </div>
+                                <div class="mock-result">
+                                    <div class="mock-result-badge fresh">✓ Ikan Segar</div>
+                                    <div class="mock-confidence">
+                                        <div class="conf-bar">
+                                            <div class="conf-fill" style="width: 93%"></div>
+                                        </div>
+                                        <span>93% akurasi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phone-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="fitur">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-tag">Fitur Unggulan</div>
+                <h2 class="section-title">Semua yang Anda Butuhkan</h2>
+                <p class="section-desc">Dirancang untuk memberikan pengalaman terbaik dalam mendeteksi kesegaran ikan</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card featured">
+                    <div class="feature-icon-wrap teal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <h3>Deteksi via Kamera</h3>
+                    <p>Aktifkan kamera dan arahkan ke ikan. Sistem langsung menganalisis secara real-time tanpa perlu menyimpan foto.</p>
+                    <a href="/detect?mode=camera" class="feature-link">Coba Sekarang <span>→</span></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap cyan">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
+                    <h3>Upload Foto</h3>
+                    <p>Unggah foto ikan dari galeri Anda. Didukung format JPG, PNG, dan WebP.</p>
+                    <a href="/detect?mode=upload" class="feature-link">Upload Foto <span>→</span></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap emerald">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3>Deteksi Non-Ikan</h3>
+                    <p>Sistem cerdas yang mengenali apabila objek bukan ikan, mencegah hasil yang menyesatkan.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Akurasi Tinggi</h3>
+                    <p>Dilatih dengan 5.112+ data gambar ikan menggunakan model YOLOv8, mencapai akurasi hingga 96.17%.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>Hasil Instan</h3>
+                    <p>Analisis selesai dalam kurang dari 2 detik. Dapatkan informasi kesegaran ikan secara cepat.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap pink">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>Dua Klasifikasi</h3>
+                    <p>Mendeteksi dua kondisi: <strong>Segar</strong> (layak konsumsi) dan <strong>Tidak Segar</strong> (tidak layak konsumsi).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="cara-kerja">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-tag">Cara Kerja</div>
+                <h2 class="section-title">Mudah dalam 3 Langkah</h2>
+                <p class="section-desc">Tidak perlu keahlian khusus. Cukup ikuti langkah sederhana ini.</p>
+            </div>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <h3>Ambil / Upload Foto</h3>
+                    <p>Gunakan kamera perangkat Anda atau unggah foto ikan yang ingin diperiksa kesegarannya.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <h3>AI Menganalisis</h3>
+                    <p>Model YOLOv8 kami memproses gambar menggunakan computer vision untuk mendeteksi kondisi ikan.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h3>Lihat Hasil</h3>
+                    <p>Dapatkan hasil klasifikasi lengkap dengan tingkat kepercayaan dan rekomendasi yang jelas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accuracy Section -->
+    <section class="accuracy-section" id="akurasi">
+        <div class="section-container">
+            <div class="accuracy-grid">
+                <div class="accuracy-content">
+                    <div class="section-tag">Performa Model</div>
+                    <h2 class="section-title">Akurasi yang Terbukti</h2>
+                    <p>Model kami dilatih secara intensif menggunakan lebih dari 5.000 foto ikan dari berbagai kondisi, menghasilkan tingkat akurasi yang sangat tinggi.</p>
+                    <div class="metrics-list">
+                        <div class="metric-row">
+                            <span class="metric-name">Akurasi (mAP50)</span>
+                            <div class="metric-bar-wrap">
+                                <div class="metric-bar"><div class="metric-fill" data-width="96.17" style="width:0%"></div></div>
+                                <span class="metric-value">96.17%</span>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">Precision</span>
+                            <div class="metric-bar-wrap">
+                                <div class="metric-bar"><div class="metric-fill" data-width="91.38" style="width:0%"></div></div>
+                                <span class="metric-value">91.38%</span>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">Recall</span>
+                            <div class="metric-bar-wrap">
+                                <div class="metric-bar"><div class="metric-fill" data-width="91.64" style="width:0%"></div></div>
+                                <span class="metric-value">91.64%</span>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">mAP50-95</span>
+                            <div class="metric-bar-wrap">
+                                <div class="metric-bar"><div class="metric-fill" data-width="61.87" style="width:0%"></div></div>
+                                <span class="metric-value">61.87%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accuracy-visual">
+                    <div class="accuracy-card">
+                        <div class="acc-ring-wrap">
+                            <svg class="acc-ring" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10"/>
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="url(#ringGrad)" stroke-width="10"
+                                    stroke-dasharray="314" stroke-dashoffset="314"
+                                    stroke-linecap="round" transform="rotate(-90 60 60)" id="mainRing"/>
+                                <defs>
+                                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#14b8a6"/>
+                                        <stop offset="100%" stop-color="#06b6d4"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="acc-ring-text">
+                                <span class="acc-ring-number" id="ringNumber">0</span>
+                                <span class="acc-ring-pct">%</span>
+                                <span class="acc-ring-label">mAP50</span>
+                            </div>
+                        </div>
+                        <div class="acc-info">
+                            <div class="acc-badge fresh-badge">
+                                <span class="acc-badge-dot"></span>
+                                Segar (Fresh)
+                            </div>
+                            <div class="acc-badge notfresh-badge">
+                                <span class="acc-badge-dot"></span>
+                                Tidak Segar
+                            </div>
+                        </div>
+                        <p class="acc-caption">Dilatih dengan <strong>5,112</strong> gambar dataset selama <strong>100 epoch</strong> menggunakan GPU</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="section-container">
+            <div class="cta-box">
+                <div class="cta-glow"></div>
+                <div class="cta-content">
+                    <h2>Siap Memeriksa Kesegaran Ikan?</h2>
+                    <p>Gunakan IkanKita sekarang secara gratis. Tidak perlu registrasi.</p>
+                    <div class="cta-buttons">
+                        <a href="/detect?mode=camera" class="btn-primary large">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            Gunakan Kamera
+                        </a>
+                        <a href="/detect?mode=upload" class="btn-outline large">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload Foto
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="/" class="nav-brand">
+                    <div class="brand-icon small">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <ellipse cx="19" cy="20" rx="13" ry="8" fill="url(#fishGrad2)"/>
+                            <path d="M32 20 L40 12 L40 28 Z" fill="url(#fishGrad2)"/>
+                            <circle cx="12" cy="17" r="2" fill="#fff" opacity="0.9"/>
+                            <circle cx="12" cy="17" r="1" fill="#0a1628"/>
+                            <defs>
+                                <linearGradient id="fishGrad2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#14b8a6"/>
+                                    <stop offset="100%" stop-color="#0891b2"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="brand-name">IkanKita</span>
+                </a>
+                <p>Teknologi AI untuk kesegaran ikan yang lebih terpercaya.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Beranda</a>
+                <a href="/detect">Deteksi</a>
+                <a href="#fitur">Fitur</a>
+                <a href="#cara-kerja">Cara Kerja</a>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 IkanKita. Dibuat dengan ❤️ menggunakan YOLOv8.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/landing.js"></script>
+</body>
+</html>

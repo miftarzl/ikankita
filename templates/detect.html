@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deteksi Ikan – IkanKita</title>
+    <meta name="description" content="Deteksi kesegaran ikan menggunakan kamera atau upload foto dengan teknologi AI IkanKita.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="detect-page">
+
+    <!-- Navigation -->
+    <nav class="navbar dark" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <ellipse cx="19" cy="20" rx="13" ry="8" fill="url(#fishGradD)"/>
+                        <path d="M32 20 L40 12 L40 28 Z" fill="url(#fishGradD)"/>
+                        <circle cx="12" cy="17" r="2" fill="#fff" opacity="0.9"/>
+                        <circle cx="12" cy="17" r="1" fill="#0a1628"/>
+                        <defs>
+                            <linearGradient id="fishGradD" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#14b8a6"/>
+                                <stop offset="100%" stop-color="#0891b2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="brand-name">IkanKita</span>
+            </a>
+            <a href="/" class="btn-ghost-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <!-- Detect App -->
+    <main class="detect-main">
+        <div class="detect-container">
+            <!-- Header -->
+            <div class="detect-header">
+                <h1>Deteksi Kesegaran Ikan</h1>
+                <p>Pilih metode deteksi yang Anda inginkan</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="detect-tabs">
+                <button class="tab-btn active" id="tab-camera" data-tab="camera">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    Kamera Real-time
+                </button>
+                <button class="tab-btn" id="tab-upload" data-tab="upload">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Foto
+                </button>
+            </div>
+
+            <!-- Camera Panel -->
+            <div class="detect-panel active" id="panel-camera">
+                <div class="detect-layout">
+                    <div class="camera-section">
+                        <div class="camera-wrapper" id="cameraWrapper">
+                            <!-- Permission State -->
+                            <div class="camera-state" id="cam-permission">
+                                <div class="cam-icon-wrap">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                </div>
+                                <h3>Aktifkan Kamera</h3>
+                                <p>Izinkan akses kamera untuk memulai deteksi secara real-time</p>
+                                <button class="btn-primary" id="startCamera">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    Izinkan Kamera
+                                </button>
+                            </div>
+                            <!-- Denied State -->
+                            <div class="camera-state hidden" id="cam-denied">
+                                <div class="cam-icon-wrap red">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                                </div>
+                                <h3>Akses Kamera Ditolak</h3>
+                                <p>Harap izinkan akses kamera di pengaturan browser Anda, lalu refresh halaman ini.</p>
+                            </div>
+                            <!-- Active Camera -->
+                            <div class="camera-active hidden" id="cam-active">
+                                <video id="videoElement" autoplay playsinline muted></video>
+                                <canvas id="cameraCanvas" class="hidden"></canvas>
+                                <div class="camera-overlay">
+                                    <div class="scan-box">
+                                        <div class="corner tl"></div>
+                                        <div class="corner tr"></div>
+                                        <div class="corner bl"></div>
+                                        <div class="corner br"></div>
+                                        <div class="scan-line-anim"></div>
+                                    </div>
+                                    <div class="cam-status-badge" id="camStatus">
+                                        <span class="pulse-dot"></span>
+                                        Kamera Aktif
+                                    </div>
+                                </div>
+                                <div class="camera-controls">
+                                    <button class="cam-ctrl-btn" id="switchCamera" title="Ganti Kamera">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+                                    </button>
+                                    <button class="cam-ctrl-btn capture-btn" id="captureBtn" title="Ambil Foto">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>
+                                    </button>
+                                    <button class="cam-ctrl-btn" id="stopCamera" title="Matikan Kamera">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-section" id="resultSection">
+                        <div class="result-placeholder" id="resultPlaceholder">
+                            <div class="result-placeholder-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            </div>
+                            <p>Arahkan kamera ke ikan,<br>lalu tekan tombol ambil foto</p>
+                        </div>
+                        <div class="result-card hidden" id="resultCard"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Panel -->
+            <div class="detect-panel" id="panel-upload">
+                <div class="detect-layout">
+                    <div class="upload-section">
+                        <div class="dropzone" id="dropzone">
+                            <div class="dropzone-content" id="dropzoneContent">
+                                <div class="dz-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                </div>
+                                <h3>Seret & Lepas Foto Di Sini</h3>
+                                <p>atau</p>
+                                <label class="btn-primary" for="fileInput">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                                    Pilih File
+                                </label>
+                                <input type="file" id="fileInput" accept="image/*" class="hidden">
+                                <p class="dz-hint">Didukung: JPG, PNG, WebP (maks. 10MB)</p>
+                            </div>
+                            <div class="dropzone-preview hidden" id="dropzonePreview">
+                                <img id="previewImage" src="" alt="Preview">
+                                <button class="dz-remove-btn" id="removeImage">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn-primary full-width" id="analyzeBtn" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            Analisis Foto
+                        </button>
+                    </div>
+                    <div class="result-section">
+                        <div class="result-placeholder" id="uploadResultPlaceholder">
+                            <div class="result-placeholder-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                            </div>
+                            <p>Upload foto ikan terlebih dahulu<br>untuk melihat hasil analisis</p>
+                        </div>
+                        <div class="result-card hidden" id="uploadResultCard"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <p>Menganalisis gambar...</p>
+            <span>Model AI sedang bekerja</span>
+        </div>
+    </div>
+
+    <script src="/static/js/detect.js"></script>
+</body>
+</html>
