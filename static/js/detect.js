@@ -126,19 +126,29 @@ function drawBoundingBoxes(canvas, detections, naturalW, naturalH) {
 // RESULT BUILDER
 // ========================
 function buildResultHTML(data) {
-    const { status, label, detections } = data;
+    const { status, label, detections, low_confidence } = data;
 
-    const icons = { fresh: '🐟', not_fresh: '🤢', uncertain: '⚠️', not_fish: '❌' };
-    const labels = { fresh: 'Ikan Segar', not_fresh: 'Ikan Tidak Segar', uncertain: 'Deteksi Tidak Pasti', not_fish: 'Bukan Ikan' };
+    const icons = { fresh: '🐟', not_fresh: '🤢', not_fish: '❌' };
+    const labels = { fresh: 'Ikan Segar', not_fresh: 'Ikan Tidak Segar', not_fish: 'Bukan Ikan' };
     const statusClass = status === 'not_fresh' ? 'not-fresh' : status === 'not_fish' ? 'not-fish' : status;
     const adviceMap = {
         fresh: '✅ Ikan ini <strong>layak dikonsumsi</strong>. Kondisi masih segar dan baik.',
         not_fresh: '❌ Ikan ini <strong>tidak direkomendasikan</strong> untuk dikonsumsi. Kondisi sudah tidak segar.',
-        uncertain: '⚠️ Tingkat kepercayaan rendah. Coba ambil foto lebih dekat dengan pencahayaan lebih baik.',
         not_fish: '🔍 Objek tidak terdeteksi sebagai ikan. Pastikan ikan terlihat jelas di kamera.'
     };
 
-    let detHTML = '';
+    // Low-confidence warning banner
+    const lowConfBanner = low_confidence ? `
+        <div class="low-conf-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="low-conf-icon">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div class="low-conf-text">
+                <strong>Kepercayaan deteksi rendah</strong>
+                <span>Hasil ini perlu dikonfirmasi. Coba foto ulang dengan pencahayaan lebih terang, jarak lebih dekat, dan ikan terlihat jelas.</span>
+            </div>
+        </div>` : '';
 
     return `
         <div class="result-bbox-preview" id="bboxPreview">
@@ -147,7 +157,7 @@ function buildResultHTML(data) {
         <div class="result-status-icon ${statusClass}">${icons[status] || '❓'}</div>
         <div class="result-label ${statusClass}">${labels[status] || 'Unknown'}</div>
         <div class="result-message">${adviceMap[status] || data.message}</div>
-        ${detHTML}
+        ${lowConfBanner}
         <div class="result-try-again">
             <button class="btn-secondary" onclick="resetAll()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
