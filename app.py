@@ -14,8 +14,9 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), 'runs', 'detect', 'train', 
 model = YOLO(MODEL_PATH)
 
 CLASS_NAMES = ['Fresh', 'Non-Fresh']
-CONFIDENCE_THRESHOLD = 0.45
-NON_FISH_THRESHOLD = 0.30  # Below this = not a fish at all
+CONFIDENCE_THRESHOLD = 0.50   # Above this = high-confidence result
+LOW_CONF_THRESHOLD = 0.30    # Between LOW_CONF and CONFIDENCE = show result with warning
+NON_FISH_THRESHOLD = 0.20    # Below this = not a fish at all
 
 
 @app.route('/')
@@ -63,6 +64,7 @@ def detect():
         detections.sort(key=lambda x: x['confidence'], reverse=True)
 
         # Determine result status
+        low_confidence = False
         if not detections:
             status = 'not_fish'
             message = 'Objek tidak dikenali sebagai ikan'
@@ -71,15 +73,17 @@ def detect():
             status = 'not_fish'
             message = 'Kemungkinan bukan ikan atau kualitas gambar kurang baik'
             label = None
-        elif detections[0]['confidence'] / 100 < CONFIDENCE_THRESHOLD:
-            status = 'uncertain'
-            message = 'Terdeteksi ikan namun kepercayaan rendah'
-            label = detections[0]['class']
         else:
             best = detections[0]
             label = best['class']
             status = 'fresh' if label == 'Fresh' else 'not_fresh'
-            message = 'Ikan Segar' if label == 'Fresh' else 'Ikan Tidak Segar'
+            if best['confidence'] / 100 < CONFIDENCE_THRESHOLD:
+                # Low confidence: still show best-guess label but flag it
+                low_confidence = True
+                message = ('Kemungkinan Ikan Segar' if label == 'Fresh'
+                           else 'Kemungkinan Ikan Tidak Segar')
+            else:
+                message = 'Ikan Segar' if label == 'Fresh' else 'Ikan Tidak Segar'
 
         # Get image dimensions for bbox normalization
         img_w, img_h = img.size
@@ -88,6 +92,7 @@ def detect():
             'status': status,
             'message': message,
             'label': label,
+            'low_confidence': low_confidence,
             'detections': detections,
             'image_size': {'width': img_w, 'height': img_h}
         })
@@ -97,4 +102,4 @@ def detect():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host='0.0.0.0', port=5000)
