@@ -1406,10 +1406,52 @@ input[type="file"].hidden { display: none; }
 
 .detection-pct { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); min-width: 42px; text-align: right; }
 
+/* Low-confidence warning banner */
+.low-conf-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(234, 179, 8, 0.08));
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-left: 3px solid #f59e0b;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 8px 0 4px;
+    animation: fadeIn 0.4s ease;
+}
+
+.low-conf-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #f59e0b;
+    margin-top: 2px;
+}
+
+.low-conf-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.low-conf-text strong {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fbbf24;
+    letter-spacing: 0.01em;
+}
+
+.low-conf-text span {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 .result-try-again {
     margin-top: auto;
     padding-top: 8px;
 }
+
 
 .btn-secondary {
     display: inline-flex;
